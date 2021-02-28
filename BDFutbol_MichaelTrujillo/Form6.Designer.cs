@@ -95,6 +95,7 @@ namespace BDFutbol_MichaelTrujillo
             this.equiposCombo.Name = "equiposCombo";
             this.equiposCombo.Size = new System.Drawing.Size(121, 21);
             this.equiposCombo.TabIndex = 21;
+            this.equiposCombo.SelectedIndexChanged += new System.EventHandler(this.equiposCombo_SelectedIndexChanged);
             // 
             // label5
             // 

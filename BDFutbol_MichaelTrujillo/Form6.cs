@@ -45,11 +45,11 @@ namespace BDFutbol_MichaelTrujillo
             if (result == DialogResult.Yes)
             {
                 insertar();
-                this.Close();
+              
             }
             else
             {
-                this.Close();
+              
             }
         }
 
@@ -57,27 +57,7 @@ namespace BDFutbol_MichaelTrujillo
 
         private void Form6_Load(object sender, EventArgs e)
         {
-            con.Open();
-
-            SqlDataAdapter da = new SqlDataAdapter("select * from equipos", con);
-            DataTable dt = new DataTable();
-            SqlDataAdapter da2 = new SqlDataAdapter("select * from ligas", con);
-            DataTable dt2 = new DataTable();
-
-
-            da.Fill(dt);
-            da2.Fill(dt2);
-
-
-            ligaCombo.ValueMember = "codLiga";
-            ligaCombo.DisplayMember = "nomLiga";
-            ligaCombo.DataSource = dt2;
-
-            equiposCombo.ValueMember = "codEquipo";
-            equiposCombo.DisplayMember = "nomEquipo";
-            equiposCombo.DataSource = dt;
-
-            con.Close();
+            rellenarCombo();
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -89,11 +69,11 @@ namespace BDFutbol_MichaelTrujillo
             if (result == DialogResult.Yes)
             {
                 borrar();
-                this.Close();
+                
             }
             else
             {
-                this.Close();
+                
             }
         }
 
@@ -106,11 +86,11 @@ namespace BDFutbol_MichaelTrujillo
             if (result == DialogResult.Yes)
             {
                 actualizar();
-                this.Close();
+                
             }
             else
             {
-                this.Close();
+               
             }
         }
         //insertamos el equipo usando el procedimiento correspondiente
@@ -164,6 +144,7 @@ namespace BDFutbol_MichaelTrujillo
 
 
             con.Close();
+            rellenarCombo();
         }
         //borramos el equipo seleccionado con delete
         private void borrar()
@@ -197,17 +178,18 @@ namespace BDFutbol_MichaelTrujillo
                     errorLabel.Text = "Compruebe los datos e inténtelo de nuevo";
                 }
 
-
+                
                 con.Close();
-            }
+            rellenarCombo();
+        }
 
         //actualizamos los datos del equipo con update
         private void actualizar()
         {
             errorLabel.Text = "";
             con.Open();
-            try
-            {
+           try
+           {
                 SqlCommand command = new SqlCommand("update equipos set nomEquipo=@nomEquipo, codLiga=@codLiga, localidad=@localidad, internacional=@internacional where codEquipo=@codEquipo", con);
                
 
@@ -233,19 +215,94 @@ namespace BDFutbol_MichaelTrujillo
                 param4.Value = equiposCombo.SelectedValue;
 
 
-                SqlParameter[] parameters = { param, param1, param2, param3};
+                SqlParameter[] parameters = { param, param1, param2, param3, param4};
 
 
                 command.Parameters.AddRange(parameters);
 
                 command.ExecuteNonQuery();
 
-            }
+           }
             catch (Exception)
             {
                 errorLabel.Text = "Compruebe los datos e inténtelo de nuevo";
             }
+       
+            con.Close();
+            rellenarCombo();
+        }
 
+        private void equiposCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                con.Open();
+
+                SqlCommand command = new SqlCommand("select * from equipos where codEquipo=@codEquipo", con);
+
+
+
+                SqlParameter param = new SqlParameter
+                ("@nomEquipo", SqlDbType.Int);
+                param.Value = e.ToString();
+
+                SqlDataReader reader = command.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(reader);
+
+                nombreText.Text = dt.Rows[0][1].ToString();
+
+
+
+
+               
+            }
+            catch (Exception)
+            {
+                SqlCommand command = new SqlCommand("select * from equipos where codEquipo=@codEquipo", con);
+
+
+
+                SqlParameter param = new SqlParameter
+                ("@codEquipo", SqlDbType.Int);
+                param.Value = ((ComboBox) sender).SelectedValue;
+                command.Parameters.Add(param);
+
+                SqlDataReader reader = command.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(reader);
+
+                nombreText.Text = dt.Rows[0][1].ToString();
+
+                ligaCombo.SelectedValue = dt.Rows[0][2].ToString();
+
+                LocalidadText.Text = dt.Rows[0][3].ToString();
+
+                checkBox1.Checked =(bool) dt.Rows[0][4];
+            }
+            con.Close();
+        }
+        private void rellenarCombo()
+        {
+            con.Open();
+
+            SqlDataAdapter da = new SqlDataAdapter("select * from equipos", con);
+            DataTable dt = new DataTable();
+            SqlDataAdapter da2 = new SqlDataAdapter("select * from ligas", con);
+            DataTable dt2 = new DataTable();
+
+
+            da.Fill(dt);
+            da2.Fill(dt2);
+
+
+            ligaCombo.ValueMember = "codLiga";
+            ligaCombo.DisplayMember = "nomLiga";
+            ligaCombo.DataSource = dt2;
+
+            equiposCombo.ValueMember = "codEquipo";
+            equiposCombo.DisplayMember = "nomEquipo";
+            equiposCombo.DataSource = dt;
 
             con.Close();
         }
