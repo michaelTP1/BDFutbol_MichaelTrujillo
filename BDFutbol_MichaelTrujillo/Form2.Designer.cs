@@ -130,6 +130,7 @@ namespace BDFutbol_MichaelTrujillo
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1183, 566);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.filasLabel);
             this.Controls.Add(this.label2);
@@ -137,7 +138,6 @@ namespace BDFutbol_MichaelTrujillo
             this.Controls.Add(this.Actualizar);
             this.Controls.Add(this.showLigasButton);
             this.Controls.Add(this.showFutbolistasButton);
-            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.showEquiposButton);
             this.Name = "Form2";
             this.Text = "Form1";

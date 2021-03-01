@@ -54,19 +54,35 @@ namespace BDFutbol_MichaelTrujillo
 
                     da.Fill(ds, "Equipos");
 
-                  
+                    SqlDataAdapter da2 = new SqlDataAdapter("select * from ligas", con);
+                    DataTable dt2 = new DataTable();
 
-                    dataGridView1.DataSource = ds.Tables["Equipos"]; //Cargamos los datos en la tabla
+                   da2.Fill(ds, "Ligas");
+
+
+          
+            
+
+
+            dataGridView1.DataSource = ds.Tables["Equipos"]; //Cargamos los datos en la tabla
             string getRowCount = (dataGridView1.Rows.Count - 1).ToString();
             filasLabel.Text = getRowCount;
 
-                 dataGridView1.Columns[0].HeaderText = "Código equipo";
+                    dataGridView1.Columns[0].HeaderText = "Código equipo";
                     dataGridView1.Columns[1].HeaderText = "nombre equipo";
-                    dataGridView1.Columns[2].HeaderText = "cod liga";
+                    dataGridView1.Columns[2].HeaderText = "codLiga";
                     dataGridView1.Columns[3].HeaderText = "localidad";
                     dataGridView1.Columns[4].HeaderText = "internacional";
 
-                    table = 0;
+            DataGridViewComboBoxColumn cmb = new DataGridViewComboBoxColumn();
+            cmb.DataPropertyName = "codLiga";
+            cmb.DisplayMember = "nomLiga";
+            cmb.ValueMember = "codLiga";
+            cmb.DataSource = ds.Tables["Ligas"];
+            dataGridView1.Columns.Add(cmb);
+
+
+            table = 0;
 
 
             con.Close();

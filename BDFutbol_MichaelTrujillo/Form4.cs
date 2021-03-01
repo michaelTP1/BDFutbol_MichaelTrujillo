@@ -78,6 +78,9 @@ namespace BDFutbol_MichaelTrujillo
                 DataRowView currentRowView;
                 currentRowView = ligaDataView[e.RowIndex];
                 dataGridView2.DataSource = currentRowView.CreateChildView(ds.Relations["LigaEquipos"]);
+                Form7 form = new Form7(dataGridView2);
+                form.Show();
+
             } catch(Exception)
             {
 
